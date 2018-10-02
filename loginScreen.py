@@ -86,7 +86,7 @@ class loginScreen(QMainWindow):
     def toLogin(self):
         em = self.email.text()
         pas = self.password.text()
-        conn = pymysql.connect(host="localhost",user="root",password="Athu1998",db="carRental")
+        conn = pymysql.connect(host="localhost",user="root",password="",db="carRental")
         cur = conn.cursor()
         query = "SELECT `role` FROM `users` WHERE `email`=%s and `password`=%s"
         cur.execute(query, (em,pas))
