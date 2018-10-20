@@ -10,9 +10,19 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5.QtWidgets import QApplication
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow,QMessageBox
 
-import sqlOperations
+import pymysql
+
+import adminAddCar
+
+import driverSal
+
+import customer
+
+import pending
+
+import prebill
 
 
 class loginScreen(QMainWindow):
@@ -90,10 +100,55 @@ class loginScreen(QMainWindow):
         cur = conn.cursor()
         query = "SELECT `role` FROM `users` WHERE `email`=%s and `password`=%s"
         cur.execute(query, (em,pas))
-        result = cur.fetchall()
-        conn.close()
-        self.close()
-        self.screen = loginScreen.loginScreen()
-        self.screen.show()
+        result = cur.fetchone()
+        if result is None:
+            msg = QMessageBox()
+            # msg.setIcon(QMessageBox.Information)
+            # msg.setText("Record doesn't exist in database")
+            # msg.setInformativeText("This is additional information")
+            # msg.setWindowTitle("Not Found")
+            # msg.setDetailedText("The details are as follows:")
+            msg.about(self,'Not Found',"Record doesn't exist in database, please sign-up")
+        else:
+            log= result[0]
+            conn.close()
+            if log==2:
+                self.close()
+                self.screen = adminAddCar.adminAddCar(em)
+                self.screen.show()
+            elif log==3:
+                self.close()
+                self.screen = driverSal.driverSal(em)
+                self.screen.show()
+            else:
+                conn = pymysql.connect(host="localhost",user="root",password="",db="carRental")
+                cur = conn.cursor()
+
+                query = "SELECT `id` FROM `users` WHERE `email`=%s"
+                cur.execute(query, (em))
+                result = cur.fetchone()
+
+
+                query = "SELECT `approve` FROM `books` WHERE `cu_id`=%s"
+                cur.execute(query, result[0])
+                result1 = cur.fetchone()
+                conn.close()
+
+                if result1[0]=="pending":
+                    self.close()
+                    self.screen = pending.pending()
+                    self.screen.show()
+                elif result1[0]=="Yes":
+                    self.close()
+                    self.screen = prebill.prebill(em)
+                    self.screen.show()
+                else:
+                    self.close()
+                    self.screen = customer.customer(em)
+                    self.screen.show()
+
+                
+
+        
     
         
