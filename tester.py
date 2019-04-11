@@ -1,4 +1,4 @@
 t=5
 
-print(t)
+print(t+2)
 

@@ -152,12 +152,12 @@ class signUpScreen(QMainWindow):
         self.screen = mainscreeenCode.mainScreen()
         self.screen.show()
 
-    # def cancelled(self):
-    #     self.close()
-    #     self.screen = mainscreeenCode.mainScreen()
-    #     self.screen.show()
+    def cancelled(self):
+        self.close()
+        self.screen = mainscreeenCode.mainScreen()
+        self.screen.show()
 
-    def hi():
+    def newMethod():
     	print("Hello")
 
 
