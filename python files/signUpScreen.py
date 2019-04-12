@@ -157,7 +157,4 @@ class signUpScreen(QMainWindow):
         self.screen = mainscreeenCode.mainScreen()
         self.screen.show()
 
-    def newMethod():
-    	print("Hello")
-
 
